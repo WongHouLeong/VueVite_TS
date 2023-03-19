@@ -1,23 +1,32 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import LoginPage from '@/views/LoginPage.vue'
+import MainPage from '@/views/MainPage.vue'
 
+//前置函数
+function requireAuth(to: any, from: any, next: any) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    next({ name: 'LoginPage' }); //检查本地是否有token,没有就转到登录页
+  } else {
+    next();
+  }
+}
+
+const routes = [
+  {
+    path: '/LoginPage',
+    name: 'LoginPage',
+    component: LoginPage
+  },
+  {
+    path: '/', //主页 根目录
+    name: 'MainPage',
+    component: MainPage,
+    beforeEnter: requireAuth //进行这个页面前先进入requireAuth函数
+  }
+]
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
+  history: createWebHashHistory(),
+  routes
 })
-
 export default router
