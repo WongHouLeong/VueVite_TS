@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginPage from '@/views/LoginPage.vue'
 import MainPage from '@/views/MainPage.vue'
+import TestPage from '@/views/TestPage.vue'
 
 //前置函数
 function requireAuth(to: any, from: any, next: any) {
@@ -22,6 +23,12 @@ const routes = [
     path: '/', //主页 根目录
     name: 'MainPage',
     component: MainPage,
+    beforeEnter: requireAuth //进行这个页面前先进入requireAuth函数
+  },
+  {
+    path: '/TestPage', //主页 根目录
+    name: 'TestPage',
+    component: TestPage,
     beforeEnter: requireAuth //进行这个页面前先进入requireAuth函数
   }
 ]
