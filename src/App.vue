@@ -112,15 +112,22 @@
 
       <!-- 主要内容区 -->
       <el-main>
-        <RouterView />
+        <el-tabs v-model="activeTab" @tab-click="handleTabClick">
+          <el-tab-pane label="Home" name="/">
+            <router-view />
+          </el-tab-pane>
+          <el-tab-pane label="About" name="/TestPage">
+            <router-view />
+          </el-tab-pane>
+        </el-tabs>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { Plus, Search } from '@element-plus/icons-vue'
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 // 打开侧边栏菜单项
 const handleOpen = (key: string, keyPath: string[]) => {
@@ -158,6 +165,32 @@ const onInputBlur = () => {
 
 const input1 = ref('')
 const input3 = ref('')
+
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    const activeTab = ref<string>('/');
+    const handleTabClick = (tab: any) => {
+      activeTab.value = tab.props.name;
+      router.push(tab.props.name);
+    };
+
+    return {
+      activeTab,
+      handleTabClick,
+      handleOpen,
+      handleClose,
+      activeIndex,
+      handleSelect,
+      handleLogoClick,
+      showSaveButton,
+      onInputFocus,
+      onInputBlur,
+      input1,
+      input3
+    };
+  },
+});
 </script>
 
 <style scoped></style>
